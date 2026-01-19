@@ -1,43 +1,43 @@
-// 狗狗品种数据
+// 狗狗品种数据 - 可爱卡通风格
 export const DOG_BREEDS = [
   {
     id: 'golden-retriever',
-    name: '金毛寻回犬',
-    description: '友善、聪明、忠诚',
+    name: '金毛团子',
+    description: '软萌小团子，超级黏人',
     icon: '🐕',
-    emoji: '🦮',
+    emoji: '🐶',
     traits: ['friendly', 'smart', 'loyal'],
     unlockAt: 0, // 默认解锁
-    color: '#D4A574'
+    color: '#FFB5C5'
   },
   {
     id: 'shiba-inu',
-    name: '柴犬',
-    description: '独立、勇敢、可爱',
+    name: '柴犬馒头',
+    description: '圆滚滚的小可爱',
     icon: '🐕',
-    emoji: '🐕',
+    emoji: '🐕‍🦺',
     traits: ['independent', 'brave', 'cute'],
     unlockAt: 100, // 单身100天解锁
-    color: '#E8A87C'
+    color: '#FFDAB9'
   },
   {
     id: 'corgi',
-    name: '柯基',
-    description: '活泼、友善、好奇',
+    name: '柯基小胖',
+    description: '短腿小蘑菇',
     icon: '🐕',
-    emoji: '🐕',
+    emoji: '🦊',
     traits: ['active', 'friendly', 'curious'],
     unlockAt: 365, // 单身365天解锁
-    color: '#F4D03F'
+    color: '#FFE4B5'
   },
   {
     id: 'husky',
     name: '哈士奇',
-    description: '精力充沛、有趣',
+    description: '调皮小狼崽',
     icon: '🐕',
     emoji: '🐺',
     traits: ['energetic', 'funny'],
     unlockAt: 520, // 单身520天解锁
-    color: '#9BA4B5'
+    color: '#B0C4DE'
   }
 ]

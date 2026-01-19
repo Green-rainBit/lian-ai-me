@@ -59,8 +59,10 @@
           :class="dogAnimationClass"
           @click="interactWithDog"
         >
-          <div class="dog-emoji">{{ dogStore.dogInfo?.emoji || '🐕' }}</div>
+          <div class="dog-emoji">{{ dogStore.dogInfo?.emoji || '🐶' }}</div>
           <div class="dog-mood-indicator" :style="{ backgroundColor: dogStore.moodInfo?.color }"></div>
+          <!-- 心形效果 -->
+          <div class="heart-float" v-if="showHeart">💕</div>
         </div>
 
         <!-- 狗狗状态 -->
@@ -107,6 +109,7 @@ const currencyStore = useCurrencyStore()
 
 // 场景状态
 const isDay = ref(true)
+const showHeart = ref(false)
 
 // 计算属性
 const sceneClass = computed(() => {
@@ -144,6 +147,11 @@ const moodText = computed(() => {
 // 方法
 const interactWithDog = () => {
   dogStore.interact('pet')
+  // 显示心形效果
+  showHeart.value = true
+  setTimeout(() => {
+    showHeart.value = false
+  }, 1000)
 }
 
 const openDiary = () => {
@@ -422,10 +430,72 @@ onUnmounted(() => {
   transform: translateX(-50%) scale(1.1);
 }
 
+/* 心形浮动效果 */
+.heart-float {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+  animation: heart-float-up 1s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes heart-float-up {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-30px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-60px) scale(1);
+  }
+}
+
 .dog-emoji {
-  font-size: 100px;
+  font-size: 120px;
   display: block;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+  animation: cute-bounce 2s ease-in-out infinite;
+  position: relative;
+}
+
+/* 可爱眨眼动画 */
+.dog-emoji::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  animation: blink 4s ease-in-out infinite;
+}
+
+@keyframes cute-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+@keyframes blink {
+  0%, 45%, 55%, 100% {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) scaleY(0.1);
+    opacity: 0.5;
+  }
 }
 
 .dog-mood-indicator {
