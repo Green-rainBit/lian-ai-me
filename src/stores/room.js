@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useDogStore } from './dog'
 import { useShopStore } from './shop'
-import { HOUSE_ZONES, getDefaultZoneForItem, detectZoneByPosition } from '@/data/houseZones'
+import { HOUSE_ZONES, HOUSE_SCENES, getDefaultZoneForItem, detectZoneByPosition, getSceneIdByZone } from '@/data/houseZones'
 import { generateId, saveToStorage, loadFromStorage } from '@/utils/helpers'
 
 export const useRoomStore = defineStore('room', () => {
@@ -109,8 +109,11 @@ export const useRoomStore = defineStore('room', () => {
     if (item) {
       item.position = newPosition
 
-      // 检测是否切换了区域
-      const newZone = detectZoneByPosition(newPosition.x, newPosition.y)
+      // 获取物品当前所属的场景
+      const currentSceneId = getSceneIdByZone(item.zone)
+
+      // 检测是否切换了区域（在当前场景内检测）
+      const newZone = detectZoneByPosition(newPosition.x, newPosition.y, currentSceneId)
       if (newZone && newZone !== item.zone) {
         item.zone = newZone
       }
