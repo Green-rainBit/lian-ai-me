@@ -59,6 +59,22 @@
           </div>
         </div>
 
+        <!-- 已放置的家具 -->
+        <div class="placed-furniture">
+          <div
+            v-for="item in visibleFurniture"
+            :key="item.instanceId || item.id"
+            class="furniture-item"
+            :class="getQualityClass(item.rarity)"
+            :style="{
+              left: (item.position?.x || 50) + '%',
+              bottom: (item.position?.y || 10) + '%'
+            }"
+          >
+            {{ item.icon }}
+          </div>
+        </div>
+
         <!-- 狗狗 -->
         <div
           class="dog-character"
@@ -100,6 +116,10 @@
           <span class="action-icon">🛒</span>
           <span class="action-label">逛商店</span>
         </button>
+        <button @click="goToRoomDecorator" class="action-btn highlight-btn">
+          <span class="action-icon">🏡</span>
+          <span class="action-label">布置小屋</span>
+        </button>
       </div>
     </div>
   </div>
@@ -112,6 +132,7 @@ import { useUserStore } from "@/stores/user";
 import { useTimerStore } from "@/stores/timer";
 import { useDogStore } from "@/stores/dog";
 import { useCurrencyStore } from "@/stores/currency";
+import { useRoomStore } from "@/stores/room";
 import dayjs from "dayjs";
 
 const router = useRouter();
@@ -119,6 +140,7 @@ const userStore = useUserStore();
 const timerStore = useTimerStore();
 const dogStore = useDogStore();
 const currencyStore = useCurrencyStore();
+const roomStore = useRoomStore();
 
 // 场景状态
 const isDay = ref(true);
@@ -196,6 +218,18 @@ const moodText = computed(() => {
   return moodTexts[dogStore.mood] || "心情不错";
 });
 
+// 获取已放置的家具（按位置排序，y值小的在前面）
+const visibleFurniture = computed(() => {
+  return [...(dogStore.houseItems || [])].sort((a, b) => {
+    return (a.position?.y || 0) - (b.position?.y || 0);
+  });
+});
+
+// 获取稀有度样式类
+const getQualityClass = (rarity) => {
+  return `quality-${rarity}`;
+};
+
 // 方法
 const interactWithDog = () => {
   dogStore.interact("pet");
@@ -216,6 +250,10 @@ const goToTasks = () => {
 
 const goToShop = () => {
   router.push("/shop");
+};
+
+const goToRoomDecorator = () => {
+  router.push("/room");
 };
 
 // 定时更新
@@ -716,6 +754,39 @@ onUnmounted(() => {
   width: 200px;
 }
 
+/* 已放置的家具 */
+.placed-furniture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.furniture-item {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  font-size: clamp(24px, 5vw, 36px);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.furniture-item.quality-common {
+  filter: drop-shadow(0 0 2px rgba(168, 180, 192, 0.5));
+}
+
+.furniture-item.quality-rare {
+  filter: drop-shadow(0 0 4px rgba(107, 179, 224, 0.5));
+}
+
+.furniture-item.quality-epic {
+  filter: drop-shadow(0 0 6px rgba(184, 141, 214, 0.5));
+}
+
+.furniture-item.quality-legendary {
+  filter: drop-shadow(0 0 8px rgba(255, 183, 77, 0.5));
+  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), sparkle 2s ease-in-out infinite;
+}
+
 .energy-bar {
   width: 100%;
   height: 8px;
@@ -739,7 +810,7 @@ onUnmounted(() => {
 /* 快捷操作 */
 .quick-actions {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
 }
 
@@ -803,6 +874,29 @@ onUnmounted(() => {
   font-size: var(--font-sm);
   font-weight: var(--font-semibold);
   color: var(--color-text-primary);
+}
+
+/* 布置小屋按钮高亮样式 */
+.action-btn.highlight-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 140, 66, 0.1),
+    rgba(255, 182, 193, 0.1)
+  );
+  border-color: var(--color-primary);
+}
+
+.action-btn.highlight-btn:hover {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-cute-pink)
+  );
+  border-color: transparent;
+}
+
+.action-btn.highlight-btn:hover .action-label {
+  color: white;
 }
 
 /* Mobile optimizations */

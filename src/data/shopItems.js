@@ -9,7 +9,8 @@ export const SHOP_ITEMS = [
     price: 100,
     icon: '🛏️',
     description: '让狗狗睡得更舒服',
-    rarity: 'common'
+    rarity: 'common',
+    placementZone: 'ground'
   },
   {
     id: 'fancy-lamp',
@@ -19,7 +20,8 @@ export const SHOP_ITEMS = [
     price: 150,
     icon: '💡',
     description: '照亮小窝的每个角落',
-    rarity: 'common'
+    rarity: 'common',
+    placementZone: 'wall'
   },
   {
     id: 'garden-fence',
@@ -29,7 +31,8 @@ export const SHOP_ITEMS = [
     price: 300,
     icon: '🏡',
     description: '为庭院加上漂亮的栅栏',
-    rarity: 'rare'
+    rarity: 'rare',
+    placementZone: 'outdoor'
   },
   {
     id: 'flower-bed',
@@ -39,7 +42,8 @@ export const SHOP_ITEMS = [
     price: 250,
     icon: '🌸',
     description: '种上美丽的花朵',
-    rarity: 'rare'
+    rarity: 'rare',
+    placementZone: 'ground'
   },
   {
     id: 'pool',
@@ -49,7 +53,8 @@ export const SHOP_ITEMS = [
     price: 500,
     icon: '🏊',
     description: '夏天狗狗的最爱',
-    rarity: 'epic'
+    rarity: 'epic',
+    placementZone: 'ground'
   },
   {
     id: 'dog-house-level2',
@@ -59,7 +64,8 @@ export const SHOP_ITEMS = [
     price: 1000,
     icon: '🏠',
     description: '升级到2级豪华狗屋',
-    rarity: 'legendary'
+    rarity: 'legendary',
+    placementZone: 'ground'
   },
   // 狗狗用品类
   {

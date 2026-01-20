@@ -19,6 +19,15 @@ export const routes = [
     }
   },
   {
+    path: '/room',
+    name: 'RoomDecorator',
+    component: () => import('@/views/RoomDecorator/RoomDecoratorView.vue'),
+    meta: {
+      title: '布置小屋',
+      showTab: false
+    }
+  },
+  {
     path: '/shop',
     name: 'Shop',
     component: () => import('@/views/Shop/ShopView.vue'),

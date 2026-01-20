@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { saveToStorage, loadFromStorage } from '@/utils/helpers'
+import { generateId } from '@/utils/helpers'
 import { SHOP_ITEMS, SHOP_CATEGORIES } from '@/data/shopItems'
+import { HOUSE_ZONES } from '@/data/houseZones'
 import { useCurrencyStore } from './currency'
 import { useDogStore } from './dog'
 import { useAchievementStore } from './achievements'
@@ -76,8 +78,25 @@ export const useShopStore = defineStore('shop', {
             // 升级狗屋
             dogStore.upgradeHouse(dogStore.houseLevel + 1)
           } else {
-            // 放置家具
-            dogStore.addHouseItem(item)
+            // 放置家具 - 自动分配到指定区域和默认位置
+            const zone = item.placementZone || 'ground'
+            const zoneConfig = HOUSE_ZONES[zone]
+
+            // 添加随机偏移避免物品重叠
+            const offsetX = (Math.random() - 0.5) * 10
+            const offsetY = (Math.random() - 0.5) * 10
+
+            dogStore.addHouseItem({
+              ...item,
+              instanceId: generateId(),
+              itemId: item.id,
+              zone: zone,
+              position: {
+                x: zoneConfig.defaultPosition.x + offsetX,
+                y: zoneConfig.defaultPosition.y + offsetY
+              },
+              placedAt: new Date().toISOString()
+            })
           }
         } else if (item.type === 'accessory') {
           const dogStore = useDogStore()

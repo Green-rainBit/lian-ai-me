@@ -108,12 +108,33 @@ export const useDogStore = defineStore('dog', {
     },
 
     addHouseItem(item) {
-      // 检查是否已存在
-      if (!this.houseItems.find(i => i.id === item.id)) {
-        this.houseItems.push({
-          ...item,
-          placedAt: new Date().toISOString()
-        })
+      // 支持放置多个相同物品（使用 instanceId 区分）
+      // 如果传入的数据已经包含 instanceId，直接使用
+      const houseItem = {
+        ...item,
+        placedAt: item.placedAt || new Date().toISOString()
+      }
+      this.houseItems.push(houseItem)
+      saveToStorage('dog', this.$state)
+    },
+
+    // 更新已放置物品的位置或区域
+    updateHouseItem(instanceId, updates) {
+      const index = this.houseItems.findIndex(i => i.instanceId === instanceId)
+      if (index !== -1) {
+        this.houseItems[index] = {
+          ...this.houseItems[index],
+          ...updates
+        }
+        saveToStorage('dog', this.$state)
+      }
+    },
+
+    // 移除已放置的物品
+    removeHouseItem(instanceId) {
+      const index = this.houseItems.findIndex(i => i.instanceId === instanceId)
+      if (index !== -1) {
+        this.houseItems.splice(index, 1)
         saveToStorage('dog', this.$state)
       }
     },

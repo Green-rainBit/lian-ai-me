@@ -1,11 +1,13 @@
 <template>
-  <div class="shop-view">
-    <div class="shop-header">
-      <div class="currency-display">
+  <div class="shop-page">
+    <!-- 顶部导航 -->
+    <div class="page-header">
+      <div class="currency-card">
         <span class="coin-icon">🦴</span>
         <span class="coin-amount">{{ currencyStore.balance }}</span>
       </div>
-      <h1 class="shop-title">汪汪市集</h1>
+      <h1 class="shop-title">🛒 汪汪市集</h1>
+      <div class="header-spacer"></div>
     </div>
 
     <!-- 分类标签 -->
@@ -14,43 +16,69 @@
         v-for="category in shopStore.categories"
         :key="category.id"
         @click="selectCategory(category.id)"
-        class="category-tab"
+        class="category-chip"
         :class="{ active: shopStore.selectedCategory === category.id }"
       >
-        <span class="category-icon">{{ category.icon }}</span>
-        <span class="category-name">{{ category.name }}</span>
+        <span class="chip-icon">{{ category.icon }}</span>
+        <span class="chip-name">{{ category.name }}</span>
       </button>
     </div>
 
-    <!-- 商品列表 -->
-    <div class="items-grid">
-      <div
-        v-for="item in currentCategoryItems"
-        :key="item.id"
-        class="item-card"
-        :class="getQualityClass(item.rarity)"
-      >
-        <div class="item-icon">{{ item.icon }}</div>
-        <div class="item-info">
-          <h3 class="item-name">{{ item.name }}</h3>
-          <p class="item-description">{{ item.description }}</p>
-          <div class="item-price">
-            <span class="price-icon">🦴</span>
-            <span class="price-amount">{{ item.price }}</span>
+    <!-- 商品网格 -->
+    <div class="items-section">
+      <div class="items-grid">
+        <div
+          v-for="item in currentCategoryItems"
+          :key="item.id"
+          class="shop-item-card"
+          :class="[
+            getQualityClass(item.rarity),
+            { owned: shopStore.isItemOwned(item.id) }
+          ]"
+        >
+          <!-- 物品图标区域 -->
+          <div class="item-display">
+            <div class="item-icon-wrapper">
+              <span class="item-emoji">{{ item.icon }}</span>
+              <!-- 稀有度光效 -->
+              <div v-if="item.rarity === 'legendary'" class="rarity-glow legendary"></div>
+              <div v-else-if="item.rarity === 'epic'" class="rarity-glow epic"></div>
+              <div v-else-if="item.rarity === 'rare'" class="rarity-glow rare"></div>
+            </div>
+            <!-- 已拥有标签 -->
+            <div v-if="shopStore.isItemOwned(item.id)" class="owned-badge">
+              <span>✓</span>
+            </div>
+          </div>
+
+          <!-- 物品信息 -->
+          <div class="item-details">
+            <h3 class="item-name">{{ item.name }}</h3>
+            <p class="item-desc">{{ item.description }}</p>
+
+            <!-- 价格和购买按钮 -->
+            <div class="item-action">
+              <div class="price-tag">
+                <span class="price-icon">🦴</span>
+                <span class="price-value">{{ item.price }}</span>
+              </div>
+              <button
+                @click="purchaseItem(item)"
+                class="buy-btn"
+                :class="{ owned: shopStore.isItemOwned(item.id) }"
+                :disabled="shopStore.isItemOwned(item.id)"
+              >
+                <span v-if="!shopStore.isItemOwned(item.id)">购买</span>
+                <span v-else>已拥有</span>
+              </button>
+            </div>
           </div>
         </div>
-        <button
-          @click="purchaseItem(item)"
-          class="purchase-btn"
-          :class="{ owned: shopStore.isItemOwned(item.id) }"
-          :disabled="shopStore.isItemOwned(item.id)"
-        >
-          {{ shopStore.isItemOwned(item.id) ? '已拥有' : '购买' }}
-        </button>
       </div>
     </div>
 
-    <!-- 底部导航 -->
+    <!-- 底部导航占位 -->
+    <div class="tab-bar-spacer"></div>
     <div class="tab-bar-wrapper">
       <TabBar />
     </div>
@@ -75,13 +103,16 @@ const selectCategory = (categoryId) => {
 }
 
 const getQualityClass = (rarity) => {
-  return `quality-${rarity}`
+  return `quality-${rarity || 'common'}`
 }
 
 const purchaseItem = async (item) => {
+  if (shopStore.isItemOwned(item.id)) return
+
   try {
     await shopStore.purchaseItem(item.id)
-    alert(`成功购买 ${item.name}！`)
+    // 使用更友好的提示
+    alert(`🎉 成功购买 ${item.name}！`)
   } catch (error) {
     alert(error.message)
   }
@@ -89,194 +120,401 @@ const purchaseItem = async (item) => {
 </script>
 
 <style scoped>
-.shop-view {
+.shop-page {
   min-height: 100vh;
-  padding: var(--space-lg);
+  background: linear-gradient(
+    180deg,
+    #ffe4ec 0%,
+    #fff5f7 30%,
+    #e8f4fd 60%,
+    #d4f1f9 100%
+  );
+  padding: 16px;
   padding-bottom: 100px;
-  background: var(--color-bg-primary);
 }
 
-.shop-header {
+/* ========== 顶部导航 ========== */
+.page-header {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-  margin-bottom: var(--space-xl);
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.currency-display {
+.currency-card {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  background: var(--color-bg-card);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md);
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .coin-icon {
-  font-size: var(--font-xl);
+  font-size: 20px;
 }
 
 .coin-amount {
-  font-size: var(--font-lg);
-  font-weight: var(--font-bold);
-  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 700;
+  color: #FF8C94;
 }
 
 .shop-title {
-  font-size: var(--font-2xl);
-  font-weight: var(--font-bold);
-  color: var(--color-text-primary);
+  flex: 1;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
 }
 
-/* 分类标签 */
+.header-spacer {
+  width: 80px;
+}
+
+/* ========== 分类标签 ========== */
 .category-tabs {
   display: flex;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xl);
+  gap: 8px;
+  margin-bottom: 20px;
   overflow-x: auto;
-  padding-bottom: var(--space-sm);
+  padding-bottom: 4px;
 }
 
-.category-tab {
+.category-chip {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-md);
-  background: var(--color-bg-card);
-  border: 2px solid transparent;
-  border-radius: var(--radius-lg);
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 182, 193, 0.3);
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
-.category-tab:hover {
-  border-color: var(--color-primary);
+.category-chip:hover {
+  border-color: #FF8C94;
+  background: rgba(255, 140, 148, 0.1);
+  transform: translateY(-2px);
 }
 
-.category-tab.active {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-}
-
-.category-tab.active .category-name {
+.category-chip.active {
+  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
   color: white;
+  border-color: transparent;
 }
 
-.category-icon {
-  font-size: var(--font-2xl);
+.chip-icon {
+  font-size: 18px;
 }
 
-.category-name {
-  font-size: var(--font-sm);
-  font-weight: var(--font-medium);
+/* ========== 商品网格 ========== */
+.items-section {
+  margin-bottom: 20px;
 }
 
-/* 商品列表 */
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
 }
 
-.item-card {
-  background: var(--color-bg-card);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  box-shadow: var(--shadow-md);
+.shop-item-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   border: 2px solid transparent;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.item-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.shop-item-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.item-card.quality-common {
-  border-color: var(--quality-common);
+.shop-item-card.owned {
+  opacity: 0.7;
 }
 
-.item-card.quality-rare {
-  border-color: var(--quality-rare);
+/* 稀有度边框样式 */
+.shop-item-card.quality-common {
+  border-color: #e0e0e0;
 }
 
-.item-card.quality-epic {
-  border-color: var(--quality-epic);
+.shop-item-card.quality-rare {
+  border-color: #81d4fa;
+  background: linear-gradient(145deg, #e1f5fe, #ffffff);
 }
 
-.item-card.quality-legendary {
-  border-color: var(--quality-legendary);
+.shop-item-card.quality-epic {
+  border-color: #ce93d8;
+  background: linear-gradient(145deg, #f3e5f5, #ffffff);
 }
 
-.item-icon {
-  font-size: var(--font-4xl);
+.shop-item-card.quality-legendary {
+  border-color: #ffd54f;
+  background: linear-gradient(145deg, #fffde7, #ffffff);
+}
+
+/* 物品展示区 */
+.item-display {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+}
+
+.item-icon-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-emoji {
+  font-size: 48px;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* 稀有度光效 */
+.rarity-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  opacity: 0.3;
+  pointer-events: none;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.rarity-glow.rare {
+  background: radial-gradient(circle, rgba(129, 212, 250, 0.4), transparent);
+}
+
+.rarity-glow.epic {
+  background: radial-gradient(circle, rgba(206, 147, 216, 0.4), transparent);
+}
+
+.rarity-glow.legendary {
+  background: radial-gradient(circle, rgba(255, 213, 79, 0.5), transparent);
+  animation: legendary-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.5; }
+}
+
+@keyframes legendary-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+    box-shadow: 0 0 20px rgba(255, 213, 79, 0.6);
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.7;
+    box-shadow: 0 0 30px rgba(255, 213, 79, 0.9);
+  }
+}
+
+/* 已拥有标签 */
+.owned-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
+}
+
+/* 物品详情 */
+.item-details {
   text-align: center;
-  margin-bottom: var(--space-md);
-}
-
-.item-info {
-  margin-bottom: var(--space-md);
 }
 
 .item-name {
-  font-size: var(--font-md);
-  font-weight: var(--font-semibold);
-  margin-bottom: var(--space-xs);
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 6px 0;
 }
 
-.item-description {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-sm);
+.item-desc {
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  min-height: 34px;
 }
 
-.item-price {
+/* 购买区域 */
+.item-action {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.price-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: rgba(255, 140, 148, 0.1);
+  border-radius: 16px;
 }
 
 .price-icon {
-  font-size: var(--font-md);
+  font-size: 14px;
 }
 
-.price-amount {
-  font-size: var(--font-md);
-  font-weight: var(--font-bold);
-  color: var(--color-primary);
+.price-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #FF8C94;
 }
 
-.purchase-btn {
-  width: 100%;
-  padding: var(--space-sm);
-  background: var(--color-primary);
+.buy-btn {
+  flex: 1;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
   color: white;
   border: none;
-  border-radius: var(--radius-md);
-  font-weight: var(--font-medium);
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 140, 148, 0.3);
 }
 
-.purchase-btn:hover:not(:disabled) {
-  background: var(--color-primary-dark);
+.buy-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 140, 148, 0.5);
 }
 
-.purchase-btn:disabled {
-  background: var(--color-border);
-  color: var(--color-text-secondary);
+.buy-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.buy-btn:disabled {
+  background: #e0e0e0;
+  color: #999;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* 固定底部导航栏 */
+/* 底部导航 */
+.tab-bar-spacer {
+  height: 20px;
+}
+
 .tab-bar-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: var(--z-fixed);
+  z-index: 100;
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 480px) {
+  .shop-page {
+    padding: 12px;
+    padding-bottom: 100px;
+  }
+
+  .shop-title {
+    font-size: 18px;
+  }
+
+  .currency-card {
+    padding: 8px 12px;
+  }
+
+  .coin-amount {
+    font-size: 16px;
+  }
+
+  .category-chip {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .shop-item-card {
+    padding: 12px;
+  }
+
+  .item-icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .item-emoji {
+    font-size: 40px;
+  }
+
+  .item-name {
+    font-size: 14px;
+  }
+
+  .item-desc {
+    font-size: 11px;
+    min-height: 30px;
+  }
+
+  .price-tag {
+    padding: 5px 8px;
+  }
+
+  .price-icon {
+    font-size: 12px;
+  }
+
+  .price-value {
+    font-size: 12px;
+  }
+
+  .buy-btn {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
 }
 </style>
