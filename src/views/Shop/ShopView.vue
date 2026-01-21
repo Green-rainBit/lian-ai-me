@@ -122,13 +122,7 @@ const purchaseItem = async (item) => {
 <style scoped>
 .shop-page {
   min-height: 100vh;
-  background: linear-gradient(
-    180deg,
-    #ffe4ec 0%,
-    #fff5f7 30%,
-    #e8f4fd 60%,
-    #d4f1f9 100%
-  );
+  background: var(--color-bg-primary);
   padding: 16px;
   padding-bottom: 100px;
 }
@@ -147,10 +141,11 @@ const purchaseItem = async (item) => {
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
+  border: var(--glass-border);
 }
 
 .coin-icon {
@@ -168,7 +163,7 @@ const purchaseItem = async (item) => {
   font-size: 20px;
   font-weight: 700;
   text-align: center;
-  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
+  background: var(--gradient-rainbow);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -193,9 +188,9 @@ const purchaseItem = async (item) => {
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 182, 193, 0.3);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: var(--glass-border);
   border-radius: 24px;
   font-size: 14px;
   font-weight: 500;
@@ -212,7 +207,7 @@ const purchaseItem = async (item) => {
 }
 
 .category-chip.active {
-  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
+  background: var(--gradient-primary);
   color: white;
   border-color: transparent;
 }
@@ -233,12 +228,12 @@ const purchaseItem = async (item) => {
 }
 
 .shop-item-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: 20px;
   padding: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  border: 2px solid transparent;
+  box-shadow: var(--shadow-sm);
+  border: var(--glass-border);
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;

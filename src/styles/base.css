@@ -4,6 +4,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-family-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 容器 */
@@ -23,23 +28,24 @@
 
 /* 卡片 - 玻璃态 */
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glass);
   padding: var(--space-lg);
-  border: 1px solid rgba(255, 182, 193, 0.2);
+  border: var(--glass-border);
   transition: all var(--transition-base);
 }
 
 .card:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 .card:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 /* 按钮 - 可爱风格 */
@@ -79,15 +85,16 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+  background: var(--gradient-primary);
   color: white;
-  box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
 }
 
 .btn-primary:active {
@@ -95,14 +102,16 @@
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, var(--color-secondary-light), var(--color-secondary));
+  background: var(--gradient-secondary);
   color: white;
-  box-shadow: 0 4px 15px rgba(107, 203, 119, 0.3);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
   transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
 }
 
 /* 文本 */
