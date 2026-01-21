@@ -1,54 +1,72 @@
 /* CSS变量定义 - 可爱风格 */
 :root {
-  /* 品牌色 - 温暖明亮的色调 */
-  --color-primary: #FF8C42;
-  --color-primary-light: #FFB366;
-  --color-primary-dark: #E67325;
+  /* 品牌色 - 温暖明亮的色调 (Premium Macaron Palette) */
+  --color-primary: #FF9E64;
+  /* Soft Orange */
+  --color-primary-light: #FFC299;
+  --color-primary-dark: #FF7B30;
 
-  --color-secondary: #6BCB77;
-  --color-secondary-light: #95D99E;
-  --color-secondary-dark: #4FA859;
+  --color-secondary: #8FDA9A;
+  /* Soft Green */
+  --color-secondary-light: #B8EBC0;
+  --color-secondary-dark: #6BCB77;
 
   --color-accent: #FFD93D;
+  /* Soft Yellow */
   --color-accent-light: #FFE577;
   --color-accent-dark: #F0C425;
 
-  /* 可爱粉色系 */
-  --color-cute-pink: #FFB6C1;
-  --color-cute-pink-light: #FFD1DC;
-  --color-cute-pink-dark: #FF9AAF;
-  --color-cute-peach: #FFCBA4;
-  --color-cute-lavender: #E6E6FA;
-  --color-cute-mint: #B5EAD7;
-  --color-cute-cream: #FFF8E7;
+  /* 可爱粉色系 (Premium Pinks) */
+  --color-cute-pink: #FFB7CB;
+  /* Baby Pink */
+  --color-cute-pink-light: #FFE0E9;
+  --color-cute-pink-dark: #FF8BA7;
+  --color-cute-peach: #FFDAC1;
+  --color-cute-lavender: #E2D1F9;
+  /* Soft Lavender */
+  --color-cute-mint: #C7F9CC;
+  --color-cute-blue: #A2E1FA;
+  /* Soft Blue */
+  --color-cute-cream: #FFFBF0;
 
-  /* 中性色 */
-  --color-text-primary: #4A4A4A;
-  --color-text-secondary: #8B8B8B;
-  --color-text-light: #C5C5C5;
+  /* 文字颜色 (Softer Contrast) */
+  --color-text-primary: #5A4D41;
+  /* Dark Brownish Grey instead of harsh black */
+  --color-text-secondary: #9AA0A6;
+  --color-text-light: #CED4DA;
+  --color-text-white: #FFFFFF;
 
-  --color-bg-primary: #FFFBF7;
-  --color-bg-secondary: #FFF5EE;
-  --color-bg-card: #FFFFFF;
+  /* 背景色 */
+  --color-bg-primary: #FFF9F5;
+  /* Very warm white */
+  --color-bg-secondary: #FFF0E6;
+  --color-bg-card: rgba(255, 255, 255, 0.85);
 
-  --color-border: #F0E6E0;
-  --color-border-light: #FAF5F2;
+  --color-border: rgba(255, 255, 255, 0.6);
+  --color-border-light: rgba(255, 255, 255, 0.4);
 
-  /* 心情颜色 - 更柔和 */
-  --mood-happy: #FFE066;
-  --mood-excited: #FF8A8A;
-  --mood-calm: #7ED9A0;
-  --mood-sad: #7CB8FF;
-  --mood-bored: #B8B8B8;
-  --mood-sleepy: #C9A0DC;
-  --mood-proud: #FFB347;
+  /* 渐变 (Premium Gradients) */
+  --gradient-primary: linear-gradient(135deg, #FF9E64 0%, #FF7B30 100%);
+  --gradient-secondary: linear-gradient(135deg, #8FDA9A 0%, #6BCB77 100%);
+  --gradient-pink: linear-gradient(135deg, #FFB7CB 0%, #FF8BA7 100%);
+  --gradient-rainbow: linear-gradient(90deg, #FF9E64, #FFB7CB, #E2D1F9, #A2E1FA);
+  --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+
+  /* 心情颜色 */
+  --mood-happy: #FAD02E;
+  --mood-excited: #FF6B6B;
+  --mood-calm: #4ECDC4;
+  --mood-sad: #45B7D1;
+  --mood-bored: #95A5A6;
+  --mood-sleepy: #9B59B6;
+  --mood-proud: #F39C12;
   --mood-grateful: #FF85A2;
 
-  /* 品质颜色 - 更柔和 */
-  --quality-common: #A8B4C0;
-  --quality-rare: #6BB3E0;
-  --quality-epic: #B88DD6;
-  --quality-legendary: #FFB74D;
+  /* 品质颜色 */
+  --quality-common: #BDC3C7;
+  --quality-rare: #3498DB;
+  --quality-epic: #9B59B6;
+  --quality-legendary: #F1C40F;
 
   /* 间距系统 */
   --space-xs: 4px;
@@ -59,44 +77,56 @@
   --space-2xl: 48px;
   --space-3xl: 64px;
 
-  /* 字体大小 */
-  --font-xs: 12px;
-  --font-sm: 14px;
-  --font-md: 16px;
-  --font-lg: 18px;
-  --font-xl: 20px;
-  --font-2xl: 24px;
-  --font-3xl: 32px;
-  --font-4xl: 48px;
+  /* 字体系统 - Nunito */
+  --font-family-base: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-xs: 0.75rem;
+  /* 12px */
+  --font-sm: 0.875rem;
+  /* 14px */
+  --font-md: 1rem;
+  /* 16px */
+  --font-lg: 1.125rem;
+  /* 18px */
+  --font-xl: 1.25rem;
+  /* 20px */
+  --font-2xl: 1.5rem;
+  /* 24px */
+  --font-3xl: 2rem;
+  /* 32px */
+  --font-4xl: 3rem;
+  /* 48px */
 
   /* 字重 */
   --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
+  --font-medium: 600;
+  /* Nunito looks better a bit thicker */
+  --font-semibold: 700;
+  --font-bold: 800;
 
-  /* 圆角 - 更圆润可爱 */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  /* 圆角 - Squircle-ish */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
   --radius-full: 9999px;
-  --radius-blob: 60% 40% 50% 50% / 50% 50% 40% 60%;
 
-  /* 阴影 - 柔和带色彩 */
-  --shadow-sm: 0 2px 8px rgba(255, 182, 193, 0.15);
-  --shadow-md: 0 4px 12px rgba(255, 140, 66, 0.12);
-  --shadow-lg: 0 8px 24px rgba(255, 140, 66, 0.15);
-  --shadow-xl: 0 16px 32px rgba(255, 140, 66, 0.18);
-  --shadow-cute: 0 6px 20px rgba(255, 182, 193, 0.25);
-  --shadow-glow: 0 0 20px rgba(255, 217, 61, 0.4);
+  /* 阴影 - Soft & Premium */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-cute: 0 8px 30px rgba(255, 182, 193, 0.25);
+  --shadow-glow: 0 0 25px rgba(255, 217, 61, 0.5);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 
-  /* 过渡 - 弹性效果 */
-  --transition-fast: 150ms ease;
-  --transition-base: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-slow: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-bounce: 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* 玻璃态 */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+  --glass-backdrop: blur(16px);
+
+  /* 过渡 */
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
   /* Z-index层级 */
   --z-dropdown: 100;

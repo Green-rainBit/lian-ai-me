@@ -156,15 +156,13 @@ const getQualityClass = (rarity) => {
   return `quality-${rarity || 'common'}`
 }
 
-// 返回上一页
+// 返回首页
 const goBack = () => {
   if (roomStore.editingMode) {
-    if (confirm('退出编辑模式？更改已自动保存')) {
-      roomStore.toggleEditMode()
-    }
-  } else {
-    router.back()
+    roomStore.toggleEditMode()
+    roomStore.saveRoom()
   }
+  router.push('/')
 }
 
 // 去商店
@@ -204,18 +202,34 @@ onMounted(() => {
 .header-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.9);
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 182, 193, 0.3);
   border-radius: 24px;
   font-size: 14px;
   font-weight: 600;
-  color: #555;
+  color: #444;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(255, 150, 150, 0.15);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 150, 150, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.header-btn:active {
+  transform: translateY(0);
+}
+
+.header-btn.edit.active {
+  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
+  color: white;
+  border-color: transparent;
 }
 
 .header-btn:hover {
@@ -330,37 +344,43 @@ onMounted(() => {
 /* 区域筛选 */
 .zone-filter {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 8px 4px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .filter-chip {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 182, 193, 0.3);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
-  color: #666;
+  color: #555;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
-
 .filter-chip:hover {
   border-color: #FF8C94;
-  background: rgba(255, 140, 148, 0.1);
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 140, 148, 0.2);
 }
-
 .filter-chip.active {
   background: linear-gradient(135deg, #FF8C94, #FFB6C1);
   color: white;
   border-color: transparent;
+  box-shadow: 0 2px 8px rgba(255, 140, 148, 0.3);
 }
 
 /* 物品网格 */

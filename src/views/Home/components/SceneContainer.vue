@@ -51,11 +51,27 @@
 
       <!-- 狗狗场景 -->
       <div class="dog-scene">
-        <!-- 狗屋 -->
-        <div class="dog-house" :class="`house-level-${dogStore.houseLevel}`">
-          <div class="house-roof">🏠</div>
-          <div class="house-body">
+        <!-- 装饰背景层 -->
+        <div class="scene-decor-layer">
+          <div class="pond">
+            <div class="water-reflection"></div>
+            <div class="duck">🦆</div>
+          </div>
+          <div class="grass-patch"></div>
+        </div>
+
+        <!-- 狗屋 (草屋) -->
+        <div class="dog-house cottage-style" :class="`house-level-${dogStore.houseLevel}`">
+          <div class="chimney">
+            <div class="smoke"></div>
+          </div>
+          <div class="house-roof cottage-roof">
+            <div class="roof-texture"></div>
+          </div>
+          <div class="house-body cottage-body">
+            <div class="house-window"></div>
             <div class="house-door"></div>
+            <div class="vines">🌿</div>
           </div>
         </div>
 
@@ -285,15 +301,13 @@ onUnmounted(() => {
 .scene-container.day-scene {
   background: linear-gradient(
     180deg,
-    #ffe5ec 0%,
-    #fff0f5 30%,
-    #e8f4fd 60%,
-    #d4f1f9 100%
+    #FFDEE9 0%,
+    #B5FFFC 100%
   );
 }
 
 .scene-container.night-scene {
-  background: linear-gradient(180deg, #2d1b4e 0%, #1a1a2e 50%, #0f0f1a 100%);
+  background: linear-gradient(180deg, #09203F 0%, #537895 100%);
 }
 
 /* 背景装饰 */
@@ -469,12 +483,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-cute);
-  border: 2px solid rgba(255, 182, 193, 0.3);
+  box-shadow: var(--shadow-sm);
+  border: var(--glass-border);
   transition: all var(--transition-base);
 }
 
@@ -491,11 +505,7 @@ onUnmounted(() => {
 .coin-amount {
   font-size: var(--font-lg);
   font-weight: var(--font-bold);
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-cute-pink)
-  );
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -507,11 +517,11 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-cute);
-  border: 2px solid rgba(255, 182, 193, 0.3);
+  box-shadow: var(--shadow-sm);
+  border: var(--glass-border);
   font-size: var(--font-xl);
   text-decoration: none;
   transition: all var(--transition-bounce);
@@ -524,14 +534,14 @@ onUnmounted(() => {
 
 /* 计时器卡片 */
 .timer-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: var(--glass-backdrop);
   border-radius: var(--radius-2xl);
   padding: var(--space-xl) var(--space-lg);
   margin-bottom: var(--space-xl);
-  box-shadow: var(--shadow-cute);
+  box-shadow: var(--shadow-glass);
   text-align: center;
-  border: 2px solid rgba(255, 182, 193, 0.25);
+  border: var(--glass-border);
   position: relative;
   overflow: hidden;
 }
@@ -613,32 +623,129 @@ onUnmounted(() => {
 }
 
 /* 狗狗场景 */
+/* 狗狗场景 */
 .dog-scene {
   position: relative;
-  height: 300px;
+  height: 350px;
   margin-bottom: var(--space-xl);
+  perspective: 1000px;
+}
+
+/* 装饰背景层 */
+.scene-decor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pond {
+  position: absolute;
+  bottom: 20px;
+  right: 15%;
+  width: 140px;
+  height: 60px;
+  background: linear-gradient(180deg, #A2E1FA, #45B7D1);
+  border-radius: 50%;
+  box-shadow: inset 0 0 20px rgba(0, 50, 100, 0.1), 0 5px 15px rgba(162, 225, 250, 0.4);
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+}
+
+.water-reflection {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 40%;
+  height: 30%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: rotate(-15deg);
+}
+
+.duck {
+  position: absolute;
+  bottom: 15px;
+  right: 30px;
+  font-size: 20px;
+  animation: float-duck 5s ease-in-out infinite alternate;
+}
+
+@keyframes float-duck {
+  0% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(10px) rotate(5deg); }
+}
+
+.grass-patch {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(143, 218, 154, 0.6) 0%, transparent 70%);
+  z-index: -1;
 }
 
 .dog-house {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 30px;
+  left: 20%;
+  transform: translateX(-20%);
   text-align: center;
+  z-index: 10;
+  transition: all 0.3s ease;
 }
 
-.house-roof {
-  font-size: 80px;
-  margin-bottom: -20px;
+.dog-house:hover {
+  transform: translateX(-20%) scale(1.05);
 }
 
-.house-body {
-  background: #d4a574;
-  width: 150px;
-  height: 100px;
-  margin: 0 auto;
-  border-radius: var(--radius-md);
+/* 小木屋风格 */
+.cottage-roof {
+  width: 160px;
+  height: 80px;
+  background: #deb887; /* Sandy brown base */
+  border-radius: 12px;
   position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.roof-texture {
+  position: absolute;
+  inset: -10px;
+  background: 
+    radial-gradient(circle at 10px 10px, #8B4513 2px, transparent 2.5px),
+    linear-gradient(135deg, #d4a574 25%, transparent 25%) -50px 0,
+    linear-gradient(225deg, #d4a574 25%, transparent 25%) -50px 0,
+    linear-gradient(315deg, #d4a574 25%, transparent 25%),
+    linear-gradient(45deg, #d4a574 25%, transparent 25%);
+  background-size: 20px 20px;
+  background-color: #DEB887;
+  transform: rotate(45deg);
+}
+
+.cottage-roof::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: rgba(107, 203, 119, 0.6); /* Grass on roof */
+  border-radius: 12px 12px 0 0;
+}
+
+.house-body.cottage-body {
+  background: #FFF8DC;
+  width: 130px;
+  height: 90px;
+  margin: -10px auto 0;
+  border-radius: 0 0 8px 8px;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border: 2px solid #DEB887;
 }
 
 .house-door {
@@ -646,19 +753,97 @@ onUnmounted(() => {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 50px;
-  height: 70px;
-  background: #8b4513;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  width: 44px;
+  height: 65px;
+  background: #8B4513;
+  border-radius: 24px 24px 0 0;
+  box-shadow: inset 1px -1px 4px rgba(255,255,255,0.2);
+}
+
+.house-door::after {
+  content: '';
+  position: absolute;
+  top: 35px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  background: #FFD700;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+.house-window {
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  width: 30px;
+  height: 30px;
+  background: #A2E1FA;
+  border: 3px solid #8B4513;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.house-window::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #8B4513;
+  transform: translateY(-50%);
+}
+
+.house-window::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: #8B4513;
+  transform: translateX(-50%);
+}
+
+.chimney {
+  position: absolute;
+  top: -20px;
+  right: 20px;
+  width: 20px;
+  height: 40px;
+  background: #CD5C5C;
+  z-index: 1;
+}
+
+.smoke {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: float-up 3s ease-out infinite;
+}
+
+.vines {
+  position: absolute;
+  bottom: 30px;
+  right: -10px;
+  font-size: 20px;
+  transform: rotate(15deg);
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
 }
 
 .dog-character {
   position: absolute;
-  bottom: 80px;
-  left: 50%;
+  bottom: 50px;
+  left: 65%; /* Move dog slightly to the right to balance the house */
   transform: translateX(-50%);
   cursor: pointer;
   transition: transform var(--transition-base);
+  z-index: 20;
 }
 
 .dog-character:hover {
