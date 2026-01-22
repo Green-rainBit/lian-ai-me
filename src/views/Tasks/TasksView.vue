@@ -56,11 +56,20 @@ const achievementStore = useAchievementStore()
 const completeTask = async (task) => {
   try {
     await tasksStore.completeTask(task.id)
-    alert(`任务完成！获得 ${task.reward} 骨头币`)
+    if (window.$toast) {
+      window.$toast.success(`任务完成！获得 ${task.reward} 骨头币`, {
+        title: '🎉 完成任务',
+        icon: '⭐'
+      })
+    }
     // 检查成就
     await achievementStore.checkAllAchievements()
   } catch (error) {
-    alert(error.message)
+    if (window.$toast) {
+      window.$toast.error(error.message, {
+        title: '❌ 操作失败'
+      })
+    }
   }
 }
 

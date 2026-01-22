@@ -109,7 +109,9 @@ const closeModal = () => {
 
 const saveDiary = async () => {
   if (!diaryContent.value.trim()) {
-    alert('请输入日记内容')
+    if (window.$toast) {
+      window.$toast.warning('请输入日记内容', { title: '⚠️ 提示' })
+    }
     return
   }
 
@@ -119,13 +121,22 @@ const saveDiary = async () => {
       mood: selectedMood.value
     })
 
-    alert('日记保存成功！')
+    if (window.$toast) {
+      window.$toast.success('日记保存成功！', {
+        title: '✅ 保存成功',
+        icon: '📝'
+      })
+    }
     closeModal()
 
     // 检查成就
     await achievementStore.checkAllAchievements()
   } catch (error) {
-    alert('保存失败：' + error.message)
+    if (window.$toast) {
+      window.$toast.error('保存失败：' + error.message, {
+        title: '❌ 保存失败'
+      })
+    }
   }
 }
 

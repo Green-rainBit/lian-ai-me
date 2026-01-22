@@ -35,3 +35,155 @@ export function removeFromStorage(key) {
     return false
   }
 }
+
+// ===== 新增工具函数 =====
+
+/**
+ * 格式化日期为相对时间
+ * @param {string|Date} date - 日期
+ * @returns {string} 相对时间字符串
+ */
+export function formatRelativeTime(date) {
+  const now = new Date()
+  const target = new Date(date)
+  const diffMs = now - target
+  const diffSecs = Math.floor(diffMs / 1000)
+  const diffMins = Math.floor(diffSecs / 60)
+  const diffHours = Math.floor(diffMins / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffSecs < 60) return '刚刚'
+  if (diffMins < 60) return `${diffMins}分钟前`
+  if (diffHours < 24) return `${diffHours}小时前`
+  if (diffDays < 7) return `${diffDays}天前`
+
+  // 超过一周显示具体日期
+  return formatDate(date, 'MM-DD')
+}
+
+/**
+ * 格式化日期
+ * @param {string|Date} date - 日期
+ * @param {string} format - 格式化模板
+ * @returns {string} 格式化后的日期
+ */
+export function formatDate(date, format = 'YYYY-MM-DD HH:mm') {
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  const hour = String(d.getHours()).padStart(2, '0')
+  const minute = String(d.getMinutes()).padStart(2, '0')
+  const second = String(d.getSeconds()).padStart(2, '0')
+
+  return format
+    .replace('YYYY', year)
+    .replace('MM', month)
+    .replace('DD', day)
+    .replace('HH', hour)
+    .replace('mm', minute)
+    .replace('ss', second)
+}
+
+/**
+ * 防抖函数
+ * @param {Function} func - 要防抖的函数
+ * @param {number} wait - 等待时间(ms)
+ * @returns {Function} 防抖后的函数
+ */
+export function debounce(func, wait = 300) {
+  let timeout
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout)
+      func(...args)
+    }
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+
+/**
+ * 节流函数
+ * @param {Function} func - 要节流的函数
+ * @param {number} limit - 时间限制(ms)
+ * @returns {Function} 节流后的函数
+ */
+export function throttle(func, limit = 300) {
+  let inThrottle
+  return function executedFunction(...args) {
+    if (!inThrottle) {
+      func(...args)
+      inThrottle = true
+      setTimeout(() => (inThrottle = false), limit)
+    }
+  }
+}
+
+/**
+ * 深拷贝对象
+ * @param {*} obj - 要拷贝的对象
+ * @returns {*} 拷贝后的对象
+ */
+export function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') return obj
+  if (obj instanceof Date) return new Date(obj.getTime())
+  if (obj instanceof Array) return obj.map(item => deepClone(item))
+
+  const clonedObj = {}
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clonedObj[key] = deepClone(obj[key])
+    }
+  }
+  return clonedObj
+}
+
+/**
+ * 延迟函数
+ * @param {number} ms - 延迟时间(ms)
+ * @returns {Promise} Promise对象
+ */
+export function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+/**
+ * 随机数组元素
+ * @param {Array} array - 数组
+ * @returns {*} 随机元素
+ */
+export function randomItem(array) {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
+/**
+ * 获取随机数范围
+ * @param {number} min - 最小值
+ * @param {number} max - 最大值
+ * @returns {number} 随机数
+ */
+export function randomInRange(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+/**
+ * 数字格式化（添加千分位）
+ * @param {number} num - 数字
+ * @returns {string} 格式化后的字符串
+ */
+export function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+/**
+ * 截断文本
+ * @param {string} text - 文本
+ * @param {number} maxLength - 最大长度
+ * @param {string} suffix - 后缀（默认为...）
+ * @returns {string} 截断后的文本
+ */
+export function truncateText(text, maxLength, suffix = '...') {
+  if (text.length <= maxLength) return text
+  return text.substring(0, maxLength - suffix.length) + suffix
+}

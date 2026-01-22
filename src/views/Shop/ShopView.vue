@@ -111,10 +111,18 @@ const purchaseItem = async (item) => {
 
   try {
     await shopStore.purchaseItem(item.id)
-    // 使用更友好的提示
-    alert(`🎉 成功购买 ${item.name}！`)
+    // 使用现代化的toast通知
+    if (window.$toast) {
+      window.$toast.success(`成功购买 ${item.name}！`, {
+        title: '🎉 购买成功'
+      })
+    }
   } catch (error) {
-    alert(error.message)
+    if (window.$toast) {
+      window.$toast.error(error.message, {
+        title: '❌ 购买失败'
+      })
+    }
   }
 }
 </script>

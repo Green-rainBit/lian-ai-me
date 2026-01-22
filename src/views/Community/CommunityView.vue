@@ -125,7 +125,9 @@ const closeModal = () => {
 
 const createPost = async () => {
   if (!postContent.value.trim()) {
-    alert('请输入内容')
+    if (window.$toast) {
+      window.$toast.warning('请输入内容', { title: '⚠️ 提示' })
+    }
     return
   }
 
@@ -135,13 +137,22 @@ const createPost = async () => {
       mood: postMood.value
     })
 
-    alert('发布成功！')
+    if (window.$toast) {
+      window.$toast.success('发布成功！', {
+        title: '✅ 发布成功',
+        icon: '🌳'
+      })
+    }
     closeModal()
 
     // 检查成就
     await achievementStore.checkAllAchievements()
   } catch (error) {
-    alert('发布失败：' + error.message)
+    if (window.$toast) {
+      window.$toast.error('发布失败：' + error.message, {
+        title: '❌ 发布失败'
+      })
+    }
   }
 }
 

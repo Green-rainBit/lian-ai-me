@@ -34,7 +34,7 @@
       </div>
 
       <!-- 计时器卡片 -->
-      <div class="timer-card animate-fade-in-up">
+      <div class="timer-card animate-fade-in-up hover-lift">
         <div class="timer-label">单身时长</div>
         <div class="timer-display">{{ timeString }}</div>
         <div class="timer-stats">
@@ -45,6 +45,10 @@
           <div class="stat-item">
             <span class="stat-icon">{{ dogStore.dogInfo?.icon || "🐕" }}</span>
             <span class="stat-text">{{ dogStore.name }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-icon">💕</span>
+            <span class="stat-text">好感度 {{ dogStore.interactionCount }}</span>
           </div>
         </div>
       </div>
@@ -93,17 +97,28 @@
 
         <!-- 狗狗 -->
         <div
-          class="dog-character"
+          class="dog-character hover-scale"
           :class="dogAnimationClass"
           @click="interactWithDog"
+          :title="`点击和${dogStore.name}互动`"
         >
           <div class="dog-emoji">{{ dogStore.dogInfo?.emoji || "🐶" }}</div>
           <div
-            class="dog-mood-indicator"
+            class="dog-mood-indicator animate-pulse-glow"
             :style="{ backgroundColor: dogStore.moodInfo?.color }"
           ></div>
           <!-- 心形效果 -->
-          <div class="heart-float" v-if="showHeart">💕</div>
+          <div class="heart-float animate-fade-in-slide" v-if="showHeart">💕</div>
+          <!-- 装饰品 -->
+          <div v-if="dogStore.accessories.length > 0" class="dog-accessories">
+            <span
+              v-for="accessory in dogStore.accessories"
+              :key="accessory.id"
+              class="accessory-item"
+            >
+              {{ accessory.icon }}
+            </span>
+          </div>
         </div>
 
         <!-- 狗狗状态 -->
@@ -138,6 +153,12 @@
         </button>
       </div>
     </div>
+
+    <!-- 狗狗互动面板 -->
+    <DogInteractionModal
+      :show="showInteractionModal"
+      @close="closeInteractionModal"
+    />
   </div>
 </template>
 
@@ -149,6 +170,7 @@ import { useTimerStore } from "@/stores/timer";
 import { useDogStore } from "@/stores/dog";
 import { useCurrencyStore } from "@/stores/currency";
 import { useRoomStore } from "@/stores/room";
+import DogInteractionModal from "@/components/dog/DogInteractionModal.vue";
 import dayjs from "dayjs";
 
 const router = useRouter();
@@ -161,6 +183,7 @@ const roomStore = useRoomStore();
 // 场景状态
 const isDay = ref(true);
 const showHeart = ref(false);
+const showInteractionModal = ref(false);
 
 // 用于强制更新的响应式变量
 const timerKey = ref(0);
@@ -248,12 +271,12 @@ const getQualityClass = (rarity) => {
 
 // 方法
 const interactWithDog = () => {
-  dogStore.interact("pet");
-  // 显示心形效果
-  showHeart.value = true;
-  setTimeout(() => {
-    showHeart.value = false;
-  }, 1000);
+  // 打开互动面板
+  showInteractionModal.value = true;
+};
+
+const closeInteractionModal = () => {
+  showInteractionModal.value = false;
 };
 
 const openDiary = () => {
@@ -884,6 +907,29 @@ onUnmounted(() => {
   position: relative;
 }
 
+/* 装饰品样式 */
+.dog-accessories {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  gap: 4px;
+}
+
+.accessory-item {
+  font-size: 24px;
+  animation: soft-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.accessory-item:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.accessory-item:nth-child(3) {
+  animation-delay: 2s;
+}
+
 /* 可爱眨眼动画 */
 .dog-emoji::after {
   content: "";
@@ -923,11 +969,12 @@ onUnmounted(() => {
 }
 
 .dog-mood-indicator {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  margin: 8px auto 0;
-  box-shadow: 0 0 10px currentColor;
+  margin: 12px auto 0;
+  box-shadow: 0 0 15px currentColor;
+  border: 3px solid rgba(255, 255, 255, 0.8);
 }
 
 .dog-status {
@@ -1005,13 +1052,13 @@ onUnmounted(() => {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-lg) var(--space-md);
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
   border-radius: var(--radius-xl);
-  border: 2px solid rgba(255, 182, 193, 0.25);
+  border: 2px solid rgba(255, 182, 193, 0.3);
   cursor: pointer;
-  box-shadow: var(--shadow-cute);
-  transition: all var(--transition-bounce);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
 }
@@ -1026,10 +1073,10 @@ onUnmounted(() => {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.5),
     transparent
   );
-  transition: left 0.5s;
+  transition: left var(--transition-base);
 }
 
 .action-btn:hover::before {
@@ -1037,13 +1084,13 @@ onUnmounted(() => {
 }
 
 .action-btn:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(255, 140, 148, 0.25);
   border-color: var(--color-cute-pink);
 }
 
 .action-btn:active {
-  transform: translateY(-2px) scale(0.98);
+  transform: translateY(-3px) scale(0.98);
 }
 
 .action-icon {

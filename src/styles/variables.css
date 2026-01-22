@@ -1,56 +1,50 @@
 /* CSS变量定义 - 可爱风格 */
 :root {
-  /* 品牌色 - 温暖明亮的色调 (Premium Macaron Palette) */
-  --color-primary: #FF9E64;
-  /* Soft Orange */
-  --color-primary-light: #FFC299;
-  --color-primary-dark: #FF7B30;
+  /* 品牌色 - 温暖明亮的色调 (Premium Macaron Palette - 2024版本) */
+  --color-primary: #FF8C94; /* Soft Pink - 更加温柔 */
+  --color-primary-light: #FFB6C1;
+  --color-primary-dark: #FF6B7A;
 
-  --color-secondary: #8FDA9A;
-  /* Soft Green */
+  --color-secondary: #8FDA9A; /* Soft Green */
   --color-secondary-light: #B8EBC0;
   --color-secondary-dark: #6BCB77;
 
-  --color-accent: #FFD93D;
-  /* Soft Yellow */
+  --color-accent: #FFD93D; /* Soft Yellow */
   --color-accent-light: #FFE577;
   --color-accent-dark: #F0C425;
 
   /* 可爱粉色系 (Premium Pinks) */
-  --color-cute-pink: #FFB7CB;
-  /* Baby Pink */
+  --color-cute-pink: #FFB7CB; /* Baby Pink */
   --color-cute-pink-light: #FFE0E9;
   --color-cute-pink-dark: #FF8BA7;
   --color-cute-peach: #FFDAC1;
-  --color-cute-lavender: #E2D1F9;
-  /* Soft Lavender */
+  --color-cute-lavender: #E2D1F9; /* Soft Lavender */
   --color-cute-mint: #C7F9CC;
-  --color-cute-blue: #A2E1FA;
-  /* Soft Blue */
+  --color-cute-blue: #A2E1FA; /* Soft Blue */
   --color-cute-cream: #FFFBF0;
 
   /* 文字颜色 (Softer Contrast) */
-  --color-text-primary: #5A4D41;
-  /* Dark Brownish Grey instead of harsh black */
+  --color-text-primary: #5A4D41; /* Dark Brownish Grey instead of harsh black */
   --color-text-secondary: #9AA0A6;
   --color-text-light: #CED4DA;
   --color-text-white: #FFFFFF;
 
-  /* 背景色 */
-  --color-bg-primary: #FFF9F5;
-  /* Very warm white */
+  /* 背景色 - 现代渐变系统 */
+  --color-bg-primary: #FFF9F5; /* Very warm white */
   --color-bg-secondary: #FFF0E6;
-  --color-bg-card: rgba(255, 255, 255, 0.85);
+  --color-bg-card: rgba(255, 255, 255, 0.9);
+  --color-bg-glass: rgba(255, 255, 255, 0.7);
 
   --color-border: rgba(255, 255, 255, 0.6);
   --color-border-light: rgba(255, 255, 255, 0.4);
 
-  /* 渐变 (Premium Gradients) */
-  --gradient-primary: linear-gradient(135deg, #FF9E64 0%, #FF7B30 100%);
+  /* 渐变 (Premium Gradients - 2024版本) */
+  --gradient-primary: linear-gradient(135deg, #FF8C94 0%, #FFB6C1 100%);
   --gradient-secondary: linear-gradient(135deg, #8FDA9A 0%, #6BCB77 100%);
   --gradient-pink: linear-gradient(135deg, #FFB7CB 0%, #FF8BA7 100%);
-  --gradient-rainbow: linear-gradient(90deg, #FF9E64, #FFB7CB, #E2D1F9, #A2E1FA);
-  --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --gradient-rainbow: linear-gradient(90deg, #FF8C94, #B8EBC0, #E2D1F9, #A2E1FA);
+  --gradient-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  --gradient-modern-bg: linear-gradient(180deg, #ffe4ec 0%, #e8f4fd 50%, #d4f1f9 100%);
 
   /* 心情颜色 */
   --mood-happy: #FAD02E;
@@ -119,14 +113,16 @@
   --shadow-glow: 0 0 25px rgba(255, 217, 61, 0.5);
   --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 
-  /* 玻璃态 */
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.8);
-  --glass-backdrop: blur(16px);
+  /* 玻璃态 - 增强2024版本 */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: 1.5px solid rgba(255, 255, 255, 0.85);
+  --glass-backdrop: blur(20px) saturate(180%);
 
-  /* 过渡 */
+  /* 过渡 - 弹性缓动 */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 500ms cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-smooth: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   /* Z-index层级 */
   --z-dropdown: 100;
