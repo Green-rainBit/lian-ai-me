@@ -14,6 +14,7 @@ import './styles/reset.css'
 import './styles/base.css'
 import './styles/animations.css'
 import './styles/accessibility.css'
+import './styles/transitions.css'
 
 // 初始化全局错误处理
 initGlobalErrorHandler()

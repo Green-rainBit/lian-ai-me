@@ -1,0 +1,401 @@
+/**
+ * UI 过渡和动画样式
+ * 提供统一的过渡效果和动画
+ */
+
+/* ==================== 路由过渡 ==================== */
+
+/* 淡入淡出 */
+.router-fade-enter-active,
+.router-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.router-fade-enter-from,
+.router-fade-leave-to {
+  opacity: 0;
+}
+
+/* 滑动过渡 */
+.router-slide-enter-active,
+.router-slide-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.router-slide-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.router-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* 缩放淡入 */
+.router-zoom-enter-active,
+.router-zoom-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.router-zoom-enter-from,
+.router-zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ==================== 列表过渡 ==================== */
+
+/* 列表项淡入 */
+.list-enter-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.list-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* 列表移动动画 */
+.list-move {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== 模态框过渡 ==================== */
+
+/* 淡入缩放 */
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+
+.modal-fade-enter-from .modal-content,
+.modal-fade-leave-to .modal-content {
+  transform: scale(0.9) translateY(20px);
+}
+
+/* 从下方滑入 */
+.modal-slide-up-enter-active,
+.modal-slide-up-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-slide-up-enter-from,
+.modal-slide-up-leave-to {
+  opacity: 0;
+}
+
+.modal-slide-up-enter-from .modal-content,
+.modal-slide-up-leave-to .modal-content {
+  transform: translateY(100%);
+}
+
+/* ==================== 元素过渡 ==================== */
+
+/* 淡入 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 滑动淡入 */
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-fade-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* 缩放淡入 */
+.zoom-fade-enter-active,
+.zoom-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zoom-fade-enter-from,
+.zoom-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* 弹跳进入 */
+.bounce-enter-active {
+  animation: bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.bounce-leave-active {
+  transition: all 0.3s ease;
+}
+
+.bounce-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ==================== 加载动画 ==================== */
+
+/* 旋转加载 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 脉冲加载 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 闪烁加载 */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* ==================== 交互动画 ==================== */
+
+/* 悬停提升 */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 悬停缩放 */
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* 悬停闪烁 */
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 140, 148, 0.5);
+}
+
+/* 点击缩放 */
+.click-shrink:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* ==================== 页面加载 ==================== */
+
+/* 页面淡入 */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-fade-in {
+  animation: page-fade-in 0.5s ease-out;
+}
+
+/* 页面滑入 */
+@keyframes page-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-slide-up {
+  animation: page-slide-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== 性能优化 ==================== */
+
+/* 减少动画的硬件加速 */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+.will-animate-transform {
+  will-change: transform;
+}
+
+.will-animate-opacity {
+  will-change: opacity;
+}
+
+/* 动画完成后移除 will-change */
+.finished-animation {
+  will-change: auto;
+}
+
+/* GPU 加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ==================== 响应式动画 ==================== */
+
+/* 移动端减少动画时长 */
+@media (max-width: 640px) {
+  .router-fade-enter-active,
+  .router-fade-leave-active,
+  .router-slide-enter-active,
+  .router-slide-leave-active,
+  .modal-fade-enter-active,
+  .modal-fade-leave-active {
+    transition-duration: 0.2s;
+  }
+
+  .list-enter-active {
+    transition-duration: 0.3s;
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .will-animate,
+  .will-animate-transform,
+  .will-animate-opacity {
+    will-change: auto;
+  }
+}
+
+/* ==================== 实用类 ==================== */
+
+/* 快速过渡 */
+.transition-fast {
+  transition-duration: 0.15s;
+}
+
+/* 中速过渡 */
+.transition-medium {
+  transition-duration: 0.3s;
+}
+
+/* 慢速过渡 */
+.transition-slow {
+  transition-duration: 0.5s;
+}
+
+/* 缓动函数 */
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ease-in {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* 自定义贝塞尔曲线 */
+.ease-bounce {
+  transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ease-elastic {
+  transition-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
