@@ -6,34 +6,116 @@ export function generateId() {
 }
 
 // 本地存储辅助函数
-export function saveToStorage(key, data) {
+
+// 内存存储降级方案（当 localStorage 配额满时使用）
+const memoryStorage = new Map()
+const MEMORY_STORAGE_PREFIX = '_memory_'
+
+/**
+ * 保存到本地存储（自动降级到内存存储）
+ * @param {string} key - 存储键
+ * @param {*} data - 要存储的数据
+ * @param {boolean} forceMemory - 是否强制使用内存存储
+ * @returns {boolean} 是否成功
+ */
+export function saveToStorage(key, data, forceMemory = false) {
   try {
+    // 强制使用内存存储或正常存储
+    if (forceMemory) {
+      memoryStorage.set(key, data)
+      return true
+    }
+
     localStorage.setItem(key, JSON.stringify(data))
     return true
   } catch (error) {
-    console.error('保存到本地存储失败:', error)
+    // localStorage 配额超限，降级到内存存储
+    if (error.name === 'QuotaExceededError') {
+      console.warn(`[Storage] localStorage 配额超限，"${key}" 已降级到内存存储`)
+      memoryStorage.set(key, data)
+
+      // 通知用户（仅首次降级时）
+      if (!memoryStorage.has(MEMORY_STORAGE_PREFIX + 'warned')) {
+        memoryStorage.set(MEMORY_STORAGE_PREFIX + 'warned', true)
+        if (window.$toast) {
+          window.$toast.warning('存储空间不足，数据将保存在内存中，刷新页面后会丢失')
+        }
+      }
+      return true
+    }
+
+    console.error(`[Storage] 保存 "${key}" 失败:`, error)
     return false
   }
 }
 
+/**
+ * 从本地存储加载数据（自动从内存存储降级）
+ * @param {string} key - 存储键
+ * @returns {*} 存储的数据，失败返回 null
+ */
 export function loadFromStorage(key) {
   try {
+    // 先尝试从 localStorage 读取
     const data = localStorage.getItem(key)
-    return data ? JSON.parse(data) : null
+    if (data !== null) {
+      return JSON.parse(data)
+    }
   } catch (error) {
-    console.error('从本地存储加载失败:', error)
-    return null
+    console.warn(`[Storage] 从 localStorage 读取 "${key}" 失败:`, error)
   }
+
+  // localStorage 读取失败或不存在，尝试从内存存储读取
+  if (memoryStorage.has(key)) {
+    return memoryStorage.get(key)
+  }
+
+  return null
 }
 
+/**
+ * 从本地存储删除数据
+ * @param {string} key - 存储键
+ * @returns {boolean} 是否成功
+ */
 export function removeFromStorage(key) {
   try {
     localStorage.removeItem(key)
-    return true
   } catch (error) {
-    console.error('从本地存储删除失败:', error)
-    return false
+    console.warn(`[Storage] 从 localStorage 删除 "${key}" 失败:`, error)
   }
+
+  // 同时从内存存储删除
+  if (memoryStorage.has(key)) {
+    memoryStorage.delete(key)
+    return true
+  }
+
+  return true
+}
+
+/**
+ * 获取内存存储中的所有键
+ * @returns {Array<string>} 所有键
+ */
+export function getMemoryStorageKeys() {
+  return Array.from(memoryStorage.keys()).filter(key => !key.startsWith(MEMORY_STORAGE_PREFIX))
+}
+
+/**
+ * 清空内存存储（慎用）
+ */
+export function clearMemoryStorage() {
+  memoryStorage.clear()
+}
+
+/**
+ * 检查数据是否在内存存储中（表示 localStorage 不可用）
+ * @param {string} key - 存储键
+ * @returns {boolean} 是否在内存存储中
+ */
+export function isInMemoryStorage(key) {
+  return memoryStorage.has(key) && !localStorage.getItem(key)
 }
 
 // ===== 新增工具函数 =====
