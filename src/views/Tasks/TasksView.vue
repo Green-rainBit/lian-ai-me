@@ -137,10 +137,11 @@ onMounted(async () => {
   gap: var(--space-md);
   align-items: center;
   box-shadow: var(--shadow-md);
-  transition: all var(--transition-base);
+  transition: var(--card-transition);
 }
 
 .task-card:hover {
+  transform: translateY(var(--hover-translate-y));
   box-shadow: var(--shadow-lg);
 }
 

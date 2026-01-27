@@ -263,9 +263,9 @@ const purchaseItem = async (item) => {
   border-radius: var(--radius-lg);
   font-size: var(--font-sm);
   font-weight: var(--font-semibold);
-  color: #666;
+  color: var(--color-text-secondary);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   white-space: nowrap;
   scroll-snap-align: start;
   box-shadow: var(--shadow-sm);
@@ -274,16 +274,16 @@ const purchaseItem = async (item) => {
 .category-chip:hover {
   border-color: rgba(255, 140, 148, 0.4);
   background: rgba(255, 140, 148, 0.1);
-  transform: translateY(-3px);
+  transform: translateY(calc(var(--hover-translate-y) / 2));
   box-shadow: 0 4px 12px rgba(255, 140, 148, 0.2);
 }
 
 .category-chip.active {
-  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-text-white);
   border-color: transparent;
   box-shadow: 0 4px 16px rgba(255, 140, 148, 0.4);
-  transform: translateY(-3px);
+  transform: translateY(calc(var(--hover-translate-y) / 2));
 }
 
 .chip-icon {
@@ -308,7 +308,7 @@ const purchaseItem = async (item) => {
   padding: var(--space-md);
   box-shadow: var(--shadow-sm);
   border: var(--glass-border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
 }
@@ -322,7 +322,7 @@ const purchaseItem = async (item) => {
   height: 4px;
   background: var(--gradient-rainbow);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-base);
 }
 
 .shop-item-card:hover::before {
@@ -330,8 +330,8 @@ const purchaseItem = async (item) => {
 }
 
 .shop-item-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  transform: translateY(var(--hover-translate-y));
+  box-shadow: var(--card-shadow-hover);
 }
 
 .shop-item-card.owned {
@@ -459,14 +459,14 @@ const purchaseItem = async (item) => {
 .item-name {
   font-size: var(--font-md);
   font-weight: var(--font-bold);
-  color: #333;
+  color: var(--color-text-primary);
   margin: 0 0 var(--space-xs) 0;
   line-height: 1.3;
 }
 
 .item-desc {
   font-size: var(--font-sm);
-  color: #888;
+  color: var(--color-text-secondary);
   margin: 0 0 var(--space-md) 0;
   line-height: 1.5;
   min-height: 36px;
@@ -511,20 +511,20 @@ const purchaseItem = async (item) => {
 .buy-btn {
   flex: 1;
   padding: var(--space-sm) var(--space-md);
-  background: linear-gradient(135deg, #FF8C94, #FFB6C1);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-text-white);
   border: none;
   border-radius: var(--radius-md);
   font-size: var(--font-sm);
   font-weight: var(--font-bold);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 3px 10px rgba(255, 140, 148, 0.35);
+  transition: all var(--transition-base);
+  box-shadow: var(--btn-shadow);
 }
 
 .buy-btn:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 18px rgba(255, 140, 148, 0.5);
+  transform: translateY(calc(var(--hover-translate-y) / 2)) scale(var(--hover-scale));
+  box-shadow: var(--btn-shadow-hover);
 }
 
 .buy-btn:active:not(:disabled) {
