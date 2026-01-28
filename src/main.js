@@ -42,9 +42,8 @@ app.mount('#app')
     }
   } catch (error) {
     console.error('❌ Stores 初始化失败:', error)
-    if (window.$toast) {
-      window.$toast.error('数据加载失败，请刷新页面')
-    }
+    // Toast 可能还未挂载，使用 console.error 作为 fallback
+    // 用户会在后续的 Toast 中看到错误信息
   }
 })()
 

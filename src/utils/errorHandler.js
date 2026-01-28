@@ -100,7 +100,7 @@ class ErrorHandler {
     })
 
     // 显示用户友好的错误提示
-    if (window.$toast) {
+    if (window.$toast && typeof window.$toast.error === 'function') {
       window.$toast.error('操作失败，请重试')
     }
   }
@@ -117,7 +117,7 @@ class ErrorHandler {
     // 防止默认的控制台错误输出
     event.preventDefault()
 
-    if (window.$toast) {
+    if (window.$toast && typeof window.$toast.error === 'function') {
       window.$toast.error('操作失败，请重试')
     }
   }
@@ -133,7 +133,7 @@ class ErrorHandler {
       column: colno
     })
 
-    if (window.$toast) {
+    if (window.$toast && typeof window.$toast.error === 'function') {
       window.$toast.error('应用出现错误，请刷新页面')
     }
 

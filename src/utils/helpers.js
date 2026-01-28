@@ -37,7 +37,7 @@ export function saveToStorage(key, data, forceMemory = false) {
       // 通知用户（仅首次降级时）
       if (!memoryStorage.has(MEMORY_STORAGE_PREFIX + 'warned')) {
         memoryStorage.set(MEMORY_STORAGE_PREFIX + 'warned', true)
-        if (window.$toast) {
+        if (window.$toast && typeof window.$toast.warning === 'function') {
           window.$toast.warning('存储空间不足，数据将保存在内存中，刷新页面后会丢失')
         }
       }
